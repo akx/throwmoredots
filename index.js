@@ -48,7 +48,7 @@ function render(image, width, height, spacing, radius, offsetX, offsetY) {
     for (let x = 0; x < width; x += spacing) {
       const ox = (x + offsetX);
       const oy = (y + offsetY);
-      if(ox < 0 || ox >= width || oy < 0 || oy >= height) {
+      if (ox < 0 || ox >= width || oy < 0 || oy >= height) {
         continue;
       }
       const offset = data.width * oy * 4 + ox * 4;
@@ -58,7 +58,7 @@ function render(image, width, height, spacing, radius, offsetX, offsetY) {
       }
     }
   }
-  return {circles, width, height};
+  return { circles, width, height };
 }
 
 function renderedToSVG(rendered) {
@@ -79,12 +79,14 @@ const optionNumberInput = (field, attrs) => {
 };
 
 const view = () => {
-  return m('main', [
+  return [
     m('div#controls', [
-      m('label', 'Input Image: ', m('input[type=file]', {
-        accept: 'image/*',
-        onchange: (event) => setInputImage(event.target.files[0]),
-      })),
+      m('label', [
+        m('input[type=file]', {
+          accept: 'image/*',
+          onchange: (event) => setInputImage(event.target.files[0]),
+        }),
+      ]),
       m('label', 'Output Size', [
         optionNumberInput('width', { min: 0, step: 1 }),
         'x',
@@ -108,7 +110,6 @@ const view = () => {
         'x',
         optionNumberInput('offsetY', { step: 1 }),
       ]),
-
       m(
         'button',
         {
@@ -123,14 +124,15 @@ const view = () => {
               options.offsetY,
             );
           },
-        }, ['Render'],
+          disabled: !inputSVGImage,
+        }, 'Render',
       ),
     ]),
     m('div#inout', [
       m('div#input', m('img', { src: inputSVGDataURL })),
       m('div#output', rendered ? renderedToSVG(rendered) : null),
     ]),
-  ]);
+  ];
 };
 
 
