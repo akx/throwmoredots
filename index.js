@@ -67,6 +67,14 @@ function renderedToSVG(rendered) {
   ));
 }
 
+function exportSVG(rendered) {
+  const tree = renderedToSVG(rendered);
+  const frag = document.createDocumentFragment();
+  m.render(frag, tree);
+  const xml = frag.firstChild.outerHTML;
+  alert('...');
+}
+
 const optionNumberInput = (field, attrs) => {
   const finalAttrs = Object.assign({
     type: 'number',
@@ -127,6 +135,16 @@ const view = () => {
           disabled: !inputSVGImage,
         }, 'Render',
       ),
+      m(
+        'button',
+        {
+          onclick: () => {
+            exportSVG(rendered);
+          },
+          disabled: !rendered,
+        },
+        'Export',
+      )
     ]),
     m('div#inout', [
       m('div#input', m('img', { src: inputSVGDataURL })),
