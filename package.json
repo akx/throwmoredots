@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "dev": "poi",
+    "build": "poi build"
+  },
+  "devDependencies": {
+    "poi": "^9.6.13"
+  },
+  "dependencies": {
+    "mithril": "^1.1.6"
+  }
+}
