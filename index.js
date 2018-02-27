@@ -129,8 +129,8 @@ const view = () => {
       ),
     ]),
     m('div#inout', [
-      m('div#input', m('img', { src: inputSVGDataURL })),
-      m('div#output', rendered ? renderedToSVG(rendered) : null),
+      inputSVGDataURL ? m('div#input', m('img', { src: inputSVGDataURL })) : null,
+      rendered ? m('div#output', rendered ? renderedToSVG(rendered) : null) : null,
     ]),
   ];
 };
