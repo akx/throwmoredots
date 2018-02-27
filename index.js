@@ -54,7 +54,7 @@ function render(image, width, height, spacing, radius, offsetX, offsetY) {
       const offset = data.width * oy * 4 + ox * 4;
       const [r, g, b, a] = data.data.slice(offset, offset + 4);
       if (a > 192) {
-        circles.push({ x, y, r, g, b, radius });
+        circles.push({ x: x + radius, y: y + radius, r, g, b, radius });
       }
     }
   }
