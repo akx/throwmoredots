@@ -62,9 +62,40 @@ function render(image, width, height, spacing, radius, offsetX, offsetY) {
 }
 
 function renderedToSVG(rendered) {
-  return m('svg', { width: rendered.width, height: rendered.height }, rendered.circles.map((c) =>
+  const circles = rendered.circles.map((c) =>
     m('circle', { cx: c.x, cy: c.y, r: c.radius, fill: `rgb(${c.r}, ${c.g}, ${c.b})` })
-  ));
+  );
+  return m(
+    'svg',
+    {
+      width: rendered.width,
+      height: rendered.height,
+      xmlns: "http://www.w3.org/2000/svg",
+    },
+    circles
+  );
+}
+
+function exportSVG(rendered) {
+  const tree = renderedToSVG(rendered);
+  const frag = document.createDocumentFragment();
+  m.render(frag, tree);
+  const xml = frag.firstChild.outerHTML;
+  const header = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>`;
+  const file = new File([header, xml], `dots-export-${+new Date()}.svg`, {
+    type: 'image/svg+xml',
+  });
+  const url = URL.createObjectURL(file);
+  const downloadLink = Object.assign(document.createElement('a'), {
+    href: url,
+    download: file.name,
+  });
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  setTimeout(() => {
+    downloadLink.parentNode.removeChild(downloadLink);
+    URL.revokeObjectURL(url);
+  }, 1000);
 }
 
 const optionNumberInput = (field, attrs) => {
@@ -127,6 +158,16 @@ const view = () => {
           disabled: !inputSVGImage,
         }, 'Render',
       ),
+      m(
+        'button',
+        {
+          onclick: () => {
+            exportSVG(rendered);
+          },
+          disabled: !rendered,
+        },
+        'Export',
+      )
     ]),
     m('div#inout', [
       inputSVGDataURL ? m('div#input', m('img', { src: inputSVGDataURL })) : null,
