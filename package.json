@@ -1,9 +1,11 @@
 {
   "scripts": {
     "dev": "poi",
-    "build": "poi build"
+    "build": "poi build",
+    "dist": "poi build && ghpg -d dist -m $(git rev-parse HEAD)"
   },
   "devDependencies": {
+    "ghpg": "^1.0.1",
     "poi": "^9.6.13"
   },
   "dependencies": {
